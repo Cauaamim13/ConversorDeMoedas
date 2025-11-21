@@ -34,10 +34,10 @@ main {
     width: 375px;
     background-color: #fff;
     border-radius: 20px;
-    margin: 0 auto;
-    padding: 44px 24px 23px;
-
+    padding: 25px 24px 23px;
     margin: 0 auto 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 label {
