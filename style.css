@@ -10,6 +10,18 @@ body {
     background-color: #425067;
 }
 
+.background-video {
+    position: fixed;
+    top: 0;
+    z-index: -1;
+}
+
+video {
+        min-height: 100%;
+    min-width: 100%;
+    position: fixed;
+    top: 0;
+}
 
 .logo-fundo {
     width: 250px;
@@ -22,10 +34,10 @@ main {
     width: 375px;
     background-color: #fff;
     border-radius: 20px;
-    margin: 0 auto;
-    padding: 44px 24px 23px;
-
+    padding: 25px 24px 23px;
     margin: 0 auto 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 label {
@@ -34,7 +46,15 @@ label {
     font-size: 14px;
 }
 
-select, input {
+.de {
+   color: #58b467
+}
+
+.para {
+    color: #18549d
+}
+
+select{
     background: #ffffff;
     border: 1px solid #bbbbbb;
     border-radius: 4px;
@@ -45,6 +65,31 @@ select, input {
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
+}
+
+input {
+    background: #ffffff;
+    border: 1px solid #bbbbbb;
+    border-radius: 4px;
+    height: 48px;
+    width: 100%;
+    margin-bottom: 24px;
+    padding-left: 18px;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.convert1 {
+    color: #58b467;
+}
+
+.currency-select {
+    color: #18549d;
+}
+
+.input-currency::placeholder {
+    opacity: 0.4;
 }
 
 button {
