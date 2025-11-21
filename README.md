@@ -2,6 +2,8 @@
 
 Projeto desenvolvido para realizar a conversão de valores em Real Brasileiro (BRL) para Dólar Americano, Euro e Libra Esterlina.
 
+Deploy do projeto: https://cauaamim13.github.io/ConversorDeMoedas/
+
 ## 📸 Demonstração
 
 ## 🛠️ Funcionalidades
