@@ -1,71 +1,96 @@
+const currencyFrom = document.querySelector(".currency-converted");
+const currencyTo = document.querySelector(".currency-select");
+const inputCurrency = document.querySelector(".input-currency");
 const convertButton = document.querySelector(".convertButton")
 
-const currencySelect = document.querySelector(".currency-select")
+const currencyNameFrom = document.querySelector(".currency-box:first-child .currency");
+const currencyImgFrom = document.querySelector(".currency-box:first-child img");
+const currencyValueFrom = document.querySelector(".currency-value-to-convert");
 
-function convertValues () {
-    const inputCurrencyValue = document.querySelector(".input-currency").value
-    const currencyValueToConvert = document.querySelector(".currency-value-to-convert") //Valor em real
-    const currencyValueConverted = document.querySelector(".currency-value") //outras 
-    
-    
-    const dolarToday = 5.37
-    const euroToday = 6.17
-    const libraToday = 6.97
+const currencyNameTo = document.getElementById("currency-name");
+const currencyImgTo = document.querySelector(".currency-img");
+const currencyValueTo = document.querySelector(".currency-value");
 
+let cotacaoAtual = 0;
 
-    if (currencySelect.value == "dolar"){
-        currencyValueConverted.innerHTML = new Intl.NumberFormat("en-US",{
-        style: "currency",
-        currency: "USD"
-    }).format(inputCurrencyValue/dolarToday)
+const currencyData = {
+    "BRL": { name: "Real Brasileiro", img: "Assets/brasil 2.png", locale: "pt-BR", currency:"BRL" },
+    "USD": { name: "Dólar Americano", img: "Assets/estados-unidos (1) 1.png", locale: "en-US", currency: "USD" },
+    "EUR": { name: "Euro", img: "Assets/euro.png.png", locale: "de-DE", currency: "EUR" },
+    "GBP": { name: "Libra", img: "Assets/libra 1.png", locale: "en-GB", currency: "GBP" }
+}
 
+async function checkQuotation() {
+    const from = currencyFrom.value;
+    const to = currencyTo.value;
+
+    if (from === to) {
+        cotacaoAtual = 1;
+        calculate ();
+
+        return; 
     }
 
-    if (currencySelect.value == "euro") {
-        currencyValueConverted.innerHTML = new Intl.NumberFormat("de-DE", {
-            style: "currency",
-            currency: "EUR"
-        }).format(inputCurrencyValue/euroToday)
-    }
+    const url = `https://economia.awesomeapi.com.br/last/${from}-${to}`;
 
-    if (currencySelect.value == "libra") {
-        currencyValueConverted.innerHTML = new Intl.NumberFormat("en-GB", {
-            style: "currency",
-            currency: "GBP"
-        }).format(inputCurrencyValue/libraToday)
-    }
+try {
+    const response = await fetch(url);
+    const data = await response.json();
 
+    const key = `${from}${to}`;
 
+    cotacaoAtual = parseFloat(data[key].bid);
+    console.log(`Cotação atualizada: 1 ${from} = ${cotacaoAtual} ${to}`);
 
-    currencyValueToConvert.innerHTML = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-    }).format(inputCurrencyValue)
-    
+    calculate();
+
+} catch (error) {
+    console.error('Erro ao buscar API', error);
+    cotacaoAtual = 0;
+}    
 
 }
 
-function changeCurrency (){
-    const currencyName = document.getElementById("currency-name")
-    const currencyImage = document.querySelector(".currency-img")
+function calculate () {
+    const inputValue = parseFloat(inputCurrency.value) || 0;
 
-    if (currencySelect.value == 'dolar') {
-        currencyName.innerHTML = 'Dólar americano'
-        currencyImage.src = "assets/estados-unidos (1) 1.png"
-    }
+    const convertedValue = inputValue * cotacaoAtual;
 
-    if (currencySelect.value == 'euro') {
-        currencyName.innerHTML = 'Euro'
-         currencyImage.src = "assets/euro.png.png" 
-    }
+    const from = currencyFrom.value;
+    const to = currencyTo.value;
 
-    if (currencySelect.value == 'libra') {
-        currencyName.innerHTML = 'Libra'
-         currencyImage.src = "assets/libra 1.png" 
-    }
-    
-    convertValues () 
+    formatValue(inputValue, from, currencyValueFrom);
+    formatValue(convertedValue, to, currencyValueTo);
 }
 
-currencySelect.addEventListener('change', changeCurrency)
-convertButton.addEventListener("click", convertValues)
+
+function formatValue (value, currencyCode, element) {
+    const data = currencyData[currencyCode];
+    element.innerHTML = new Intl.NumberFormat(data.locale, {
+        style: "currency",
+        currency: data.currency
+    }).format(value);
+}
+
+function changeCurrencyDisplay () {
+    const from = currencyFrom.value;
+    const to = currencyTo.value;
+
+    currencyNameFrom.innerHTML = currencyData[from].name;
+    currencyImgFrom.src = currencyData[from].img;
+
+    currencyNameTo.innerHTML = currencyData[to].name;
+    currencyImgTo.src = currencyData[to].img;
+
+    checkQuotation();
+}
+
+currencyFrom.addEventListener("change", changeCurrencyDisplay);
+currencyTo.addEventListener("change", changeCurrencyDisplay);
+convertButton.addEventListener("click", checkQuotation);
+
+inputCurrency.addEventListener("input", calculate);
+
+setInterval(checkQuotation, 30000);
+
+changeCurrencyDisplay();
