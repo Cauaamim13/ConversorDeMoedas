@@ -22,13 +22,6 @@
 * ✅ **Atualização Automática**: O sistema consulta a API a cada 30 segundos para manter a cotação fresca sem recarregar a página.
 * ✅ **UX Fluida**: O cálculo acontece enquanto o usuário digita (`input event`), sem necessidade de múltiplos cliques.
 * ✅ **Tratamento de Erros**: Implementação de blocos `try/catch` para garantir que a aplicação não trave caso a API esteja indisponível.
-
-## 📸 Screenshots
-
-### Desktop
-![Screenshot Desktop]([CAMINHO_DA_IMAGEM_DESKTOP])
-
-
 ## 🧠 Aprendizados e Conceitos Aplicados
 
 Durante o desenvolvimento deste projeto, aprofundei meus conhecimentos em engenharia de software frontend:
